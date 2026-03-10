@@ -1,0 +1,10 @@
+# requirements.txt
+
+fastapi
+streamlit
+beautifulsoup4
+requests
+sqlalchemy
+pydantic
+pytest
+python-dotenv

@@ -1,0 +1,23 @@
+# config/profile.yaml
+
+target_roles:
+  - Applied AI Engineer
+  - MLOps Engineer
+  - AI Engineer
+
+positive_keywords:
+  - python
+  - ai
+  - ml
+  - docker
+  - fastapi
+  - terraform
+  - aws
+  - llm
+  - rag
+
+negative_keywords:
+  - phd
+  - senior
+  - principal
+  - relocation
