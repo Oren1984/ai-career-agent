@@ -1,3 +1,7 @@
+# collectors/greenhouse_collector.py
+# this file defines the GreenhouseCollector class 
+# to fetch job listings from Greenhouse ATS public boards
+
 """
 Greenhouse ATS collector.
 
@@ -33,7 +37,9 @@ _REQUEST_TIMEOUT = 10  # seconds
 # Default set of companies to query — expand as needed
 DEFAULT_COMPANIES: list[str] = []
 
-
+# Note: Greenhouse's public API does not require authentication for fetching job listings,
+# but it does require the company slug. We rely on configuration to specify which companies to fetch from,
+# as there is no central listing of all companies using Greenhouse.
 class GreenhouseCollector(BaseCollector):
     """
     Collects jobs from Greenhouse ATS public boards.

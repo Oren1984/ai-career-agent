@@ -1,3 +1,6 @@
+# matching/scorer.py
+# This file is part of the OpenLLM project
+
 """Match scoring engine — rules-based scoring against the candidate profile."""
 import json
 import logging

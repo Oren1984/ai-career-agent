@@ -1,4 +1,6 @@
-#!/usr/bin/env python3
+# scripts/fetch_jobs.py
+# This file is part of the OpenLLM project issue tracker:
+
 """Fetch jobs from all configured collectors and persist to DB."""
 import sys
 import os

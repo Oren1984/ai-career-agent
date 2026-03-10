@@ -1,3 +1,6 @@
+# services/job_service.py
+# This file is part of the OpenLLM project
+
 """Orchestration layer — ties collectors, normalization, filtering, and scoring together."""
 import json
 import logging

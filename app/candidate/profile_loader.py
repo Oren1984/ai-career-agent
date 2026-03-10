@@ -1,3 +1,7 @@
+# candidate/profile_loader.py
+# this file defines the CandidateProfile dataclass and 
+# the load_candidate_profile function to read profile data from disk
+
 """Candidate profile loader — reads structured profile files and builds a unified CandidateProfile."""
 import json
 import logging
@@ -13,6 +17,7 @@ _DEFAULT_PROFILE_DIR = Path(__file__).parent.parent.parent / "data" / "candidate
 _CONFIG_PROFILE_PATH = Path(__file__).parent.parent.parent / "config" / "profile.yaml"
 
 
+# Note: This loader is designed to be flexible and tolerant of missing files.
 @dataclass
 class CandidateProfile:
     """
@@ -33,6 +38,7 @@ class CandidateProfile:
     skills: dict[str, list[str]] = field(default_factory=dict)
     projects: list[dict[str, Any]] = field(default_factory=list)
 
+    # Convenience properties
     @property
     def all_skills(self) -> list[str]:
         """Flat list of all skills across all categories."""
@@ -41,6 +47,7 @@ class CandidateProfile:
             result.extend(skill_list)
         return result
 
+    # This method is designed to create a concise summary of the candidate's profile for use in LLM prompts.
     def to_prompt_string(self) -> str:
         """Build a concise profile summary suitable for LLM prompts."""
         parts: list[str] = []
@@ -65,6 +72,7 @@ class CandidateProfile:
 
         return "\n".join(parts)
 
+    # This method can be used for debugging or logging to see the full structured profile data.
     def to_dict(self) -> dict[str, Any]:
         return {
             "target_roles": self.target_roles,
@@ -75,7 +83,7 @@ class CandidateProfile:
             "projects": self.projects,
         }
 
-
+# This function is the main entry point for loading the candidate profile from disk.
 def load_candidate_profile(
     profile_dir: str | Path | None = None,
     config_path: str | Path | None = None,
@@ -117,6 +125,7 @@ def load_candidate_profile(
         except Exception as exc:
             logger.warning("Could not read %s: %s", summary_path, exc)
 
+    # 3. skills.json can be either a dict of categories → lists, or a flat list of skills.
     skills_path = p_dir / "skills.json"
     if skills_path.exists():
         try:
@@ -131,6 +140,7 @@ def load_candidate_profile(
         except Exception as exc:
             logger.warning("Could not read %s: %s", skills_path, exc)
 
+    # Note: projects.json is expected to be a list of dicts, each with at least a "name" field.
     projects_path = p_dir / "projects.json"
     if projects_path.exists():
         try:

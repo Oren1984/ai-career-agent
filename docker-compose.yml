@@ -1,5 +1,9 @@
+# docker-compose.yml
+# This file is part of the OpenLLM project issue tracker:
+
 version: "3.9"
 
+# Define the services that make up your application
 services:
   career-agent:
     build: .

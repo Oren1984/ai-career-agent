@@ -1,3 +1,6 @@
+# matching/embedding_scorer.py
+# This file is part of the OpenLLM project
+
 """
 Embedding-based semantic scorer using sentence-transformers.
 

@@ -1,3 +1,6 @@
+# llm/providers/ollama_provider.py
+# This file is part of the OpenLLM project
+
 """Ollama local LLM provider (placeholder for self-hosted models)."""
 import os
 import logging

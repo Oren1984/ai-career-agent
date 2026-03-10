@@ -1,3 +1,6 @@
+# llm/providers/claude_provider.py
+# This file is part of the OpenLLM project
+
 """Claude (Anthropic) LLM provider."""
 import os
 import logging

@@ -1,3 +1,7 @@
+# collectors/mock_collector.py
+# this file defines the MockCollector class to 
+# generate realistic demo job data for testing and demos
+
 """Mock collector that generates realistic demo job data for testing and demos."""
 import logging
 from datetime import datetime, timedelta

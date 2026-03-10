@@ -1,3 +1,6 @@
+# dashboard/streamlit_app.py
+# this file is part of the OpenLLM project issue tracker:
+
 """AI Career Agent — Streamlit Dashboard (v2.5)."""
 import sys
 import os

@@ -1,3 +1,6 @@
+# collectors/lever_collector.py
+# this file defines the LeverCollector class
+
 """
 Lever ATS collector.
 
@@ -32,7 +35,8 @@ _REQUEST_TIMEOUT = 10  # seconds
 
 DEFAULT_COMPANIES: list[str] = []
 
-
+# Note: Lever's public API does not require authentication for fetching job postings,
+# but it does require the company slug. We rely on configuration to specify which companies to fetch
 class LeverCollector(BaseCollector):
     """
     Collects jobs from Lever ATS public boards.

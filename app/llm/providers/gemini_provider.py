@@ -1,3 +1,6 @@
+# llm/providers/gemini_provider.py
+# This file is part of the OpenLLM project
+
 """Google Gemini LLM provider."""
 import os
 import logging

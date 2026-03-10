@@ -1,10 +1,23 @@
+# .gitignore
+
+# python
 __pycache__/
 *.pyc
 *.pyo
+
+# virtual environment
+/venv/
+/.venv/
 .env
+
+# database files
 data/*.db
+
+# pytest
 .pytest_cache/
 *.egg-info/
 dist/
+
+# logs
 build/
 .DS_Store

@@ -1,4 +1,6 @@
-#!/usr/bin/env python3
+# scripts/parse_resume.py
+# This file is part of the OpenLLM project issue tracker:
+
 """
 Resume parser — extract candidate information from a PDF resume and
 update the candidate profile files automatically.

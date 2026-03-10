@@ -1,4 +1,5 @@
 # config/profile.yaml
+# This file is part of the OpenLLM project issue tracker:
 
 target_roles:
   - Applied AI Engineer

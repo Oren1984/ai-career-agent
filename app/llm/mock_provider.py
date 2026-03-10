@@ -1,10 +1,13 @@
+# llm/mock_provider.py
+# This file is part of the OpenLLM project
+
 """Mock LLM provider — returns rule-based analysis without any API calls."""
 import logging
 from app.llm.base import BaseLLMProvider
 
 logger = logging.getLogger(__name__)
 
-
+# This is a simple mock provider for V1 to allow testing the overall flow without integrating a real LLM API.
 class MockLLMProvider(BaseLLMProvider):
     """
     Mock provider for V1. Returns deterministic analysis based on keyword presence.

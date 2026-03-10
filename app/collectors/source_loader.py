@@ -1,3 +1,6 @@
+# collectors/source_loader.py
+# this file defines the load_collectors() function to read sources.yaml and instantiate collectors
+
 """
 Source loader — reads config/sources.yaml and instantiates the appropriate collectors.
 

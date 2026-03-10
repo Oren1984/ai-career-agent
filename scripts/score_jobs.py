@@ -1,4 +1,6 @@
-#!/usr/bin/env python3
+# scripts/score_jobs.py
+# This file is part of the OpenLLM project issue tracker:
+
 """Score all unscored jobs against the candidate profile."""
 import sys
 import os

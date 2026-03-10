@@ -1,3 +1,7 @@
+# collectors/hackernews_collector.py
+# this file defines the HackerNewsHiringCollector class
+# to fetch job listings from the monthly "Ask HN: Who is Hiring?" thread
+
 """
 Hacker News "Who is Hiring?" collector.
 
@@ -49,7 +53,9 @@ _TITLE_PATTERN = re.compile(
     re.IGNORECASE,
 )
 
-
+# Note: HN job posts are very unstructured. We apply some heuristics to extract company/location/title,
+# but we store the full comment text as the description for maximum context.
+# The URL points to the HN comment itself.
 class HackerNewsHiringCollector(BaseCollector):
     """
     Collects jobs from the HN "Who is Hiring?" monthly thread.
@@ -79,6 +85,8 @@ class HackerNewsHiringCollector(BaseCollector):
             logger.warning("HackerNewsHiringCollector failed: %s", exc)
             return []
 
+    # We search for the most recent "Ask HN: Who is Hiring?" story using the Algolia API,
+    # which allows us to find it even if it's not on the first page of HN.
     def _find_latest_hiring_story(self) -> str | None:
         """Find the most recent 'Ask HN: Who is Hiring?' story."""
         params = {
@@ -96,7 +104,10 @@ class HackerNewsHiringCollector(BaseCollector):
                 return str(hit.get("objectID", ""))
 
         return None
-
+    
+    # Note: We fetch comments using the Algolia API, which returns them in a structured format.
+    # We then apply heuristics to parse out company/location/title,
+    # but we keep the full comment text as the description for maximum context.
     def _fetch_comments(self, story_id: str) -> list[RawJob]:
         """Fetch job comments from the hiring thread."""
         params = {
@@ -116,6 +127,8 @@ class HackerNewsHiringCollector(BaseCollector):
         logger.info("HackerNewsHiringCollector: parsed %d jobs from %d comments", len(jobs), len(hits))
         return jobs[: self.max_jobs]
 
+    # The parsing is very heuristic and best-effort. HN job posts are notoriously unstructured,
+    # so we look for common patterns but fall back to defaults when we can't find structured info.
     def _parse_comment(self, hit: dict[str, Any]) -> RawJob | None:
         """Parse a HN comment into a RawJob. Returns None if it looks like spam/noise."""
         text = hit.get("comment_text", "") or ""

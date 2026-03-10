@@ -1,3 +1,6 @@
+# notifications/channels/slack_channel.py
+# This file is part of the OpenLLM project
+
 """Slack webhook notification channel."""
 import json
 import logging

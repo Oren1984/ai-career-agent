@@ -1,3 +1,6 @@
+# notifications/notifier.py
+# This file is part of the OpenLLM project
+
 """
 Job notifier — sends alerts when new high-match jobs are discovered.
 

@@ -1,3 +1,6 @@
+# db/normalizer.py
+# this file defines functions to normalize and deduplicate raw job records before inserting into the database
+
 """Normalize and deduplicate raw job records before DB insertion."""
 import hashlib
 import logging

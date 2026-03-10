@@ -1,3 +1,6 @@
+# db/session.py
+# this file initializes the database connection and provides access to the database session
+
 """Database session management and initialization."""
 import os
 import logging

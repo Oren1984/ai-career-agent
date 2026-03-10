@@ -1,3 +1,6 @@
+# tests/conftest.py
+# This file is part of the OpenLLM project issue tracker:
+
 """Shared pytest fixtures."""
 import pytest
 from sqlalchemy import create_engine

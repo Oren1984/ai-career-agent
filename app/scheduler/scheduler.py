@@ -1,3 +1,6 @@
+# scheduler/scheduler.py
+# This file is part of the OpenLLM project
+
 """
 Scheduler module — optional background scheduling for collection and scoring runs.
 

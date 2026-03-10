@@ -1,4 +1,6 @@
-#!/usr/bin/env python3
+# scripts/run_scheduler.py
+# This file is part of the OpenLLM project issue tracker:
+
 """
 Run the background scheduler for automated job collection and scoring.
 

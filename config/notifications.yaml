@@ -1,3 +1,5 @@
+# config/notifications.yaml
+
 # Notifications configuration — AI Career Agent V3
 # Sent log: data/notifications_sent.json (tracks which jobs have been notified)
 #

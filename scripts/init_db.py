@@ -1,4 +1,6 @@
-#!/usr/bin/env python3
+# scripts/init_db.py
+# This file is part of the OpenLLM project issue tracker:
+
 """Initialize the SQLite database — create all tables and apply V2 migrations."""
 import sys
 import os

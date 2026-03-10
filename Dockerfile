@@ -1,3 +1,6 @@
+# Dockerfile for AI Career Agent
+
+# This Dockerfile sets up a containerized environment for the AI Career Agent application.
 FROM python:3.11-slim
 
 WORKDIR /app

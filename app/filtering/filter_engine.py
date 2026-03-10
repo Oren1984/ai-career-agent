@@ -1,3 +1,6 @@
+# filtering/filter_engine.py
+# this file defines the main filtering function to apply AI-based filters to collected jobs before scoring
+
 """Rules-based filter engine using profile keywords."""
 import logging
 import os
@@ -10,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 _DEFAULT_PROFILE_PATH = Path(__file__).parent.parent.parent / "config" / "profile.yaml"
 
-
+# Note: This is a simple keyword-based filter engine for demonstration purposes.
 def load_profile(profile_path: str | Path | None = None) -> dict[str, Any]:
     """Load candidate profile from YAML file."""
     path = Path(profile_path or _DEFAULT_PROFILE_PATH)
@@ -20,7 +23,7 @@ def load_profile(profile_path: str | Path | None = None) -> dict[str, Any]:
     with open(path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f) or {}
 
-
+# The filter engine checks if a job matches any positive keywords and does not match any negative keywords.
 def _text_lower(job) -> str:
     """Combine job title + description into one lowercase string for matching."""
     return f"{job.title} {job.description}".lower()

@@ -1,3 +1,6 @@
+# db/models.py
+# this file defines the SQLAlchemy ORM models for the database tables: Job, Score, StatusHistory
+
 """SQLAlchemy ORM models for the AI Career Agent database."""
 import datetime
 import json
@@ -8,7 +11,7 @@ from sqlalchemy.orm import DeclarativeBase, relationship
 class Base(DeclarativeBase):
     pass
 
-
+# Note: We use a single "jobs" table to store all collected jobs, regardless of source.
 class Job(Base):
     __tablename__ = "jobs"
 

@@ -1,3 +1,6 @@
+# llm/providers/openai_provider.py
+# This file is part of the OpenLLM project
+
 """OpenAI LLM provider."""
 import os
 import logging
