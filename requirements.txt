@@ -1,10 +1,21 @@
-# requirements.txt
+# Core dependencies
+streamlit>=1.32.0
+beautifulsoup4>=4.12.0
+requests>=2.31.0
+sqlalchemy>=2.0.0
+pydantic>=2.0.0
+pytest>=8.0.0
+python-dotenv>=1.0.0
+feedparser>=6.0.10
+pyyaml>=6.0.1
+lxml>=5.1.0
+pandas>=2.0.0
 
-fastapi
-streamlit
-beautifulsoup4
-requests
-sqlalchemy
-pydantic
-pytest
-python-dotenv
+# V2: Scheduling (optional — install to enable background scheduler)
+apscheduler>=3.10.0
+
+# V2: LLM providers (optional — install only the provider you use)
+# anthropic>=0.25.0          # Claude — set ANTHROPIC_API_KEY
+# openai>=1.0.0              # OpenAI — set OPENAI_API_KEY
+# google-generativeai>=0.5.0 # Gemini — set GOOGLE_API_KEY
+# ollama runs locally; no Python package required beyond requests (already installed)

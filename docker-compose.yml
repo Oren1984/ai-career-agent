@@ -1,4 +1,4 @@
-version: "3"
+version: "3.9"
 
 services:
   career-agent:
@@ -6,4 +6,7 @@ services:
     ports:
       - "8501:8501"
     volumes:
-      - .:/app
+      - ./data:/app/data
+    environment:
+      - DATABASE_URL=sqlite:////app/data/jobs.db
+    restart: unless-stopped

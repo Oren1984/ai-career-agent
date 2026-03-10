@@ -1,0 +1,4 @@
+Applied AI Engineer with experience building ML-powered applications and LLM-based systems.
+Strong background in Python, FastAPI, Docker, and AWS. Focused on LLM applications,
+RAG systems, MLOps pipelines, and production AI deployment. Looking for remote or
+hybrid roles in AI/ML engineering, applied AI, or MLOps.

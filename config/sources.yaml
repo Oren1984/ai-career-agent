@@ -1,0 +1,110 @@
+# config/sources.yaml
+# Source registry for AI Career Agent
+#
+# Each source entry supports:
+#   name         - unique identifier
+#   enabled      - whether this source is active (true/false)
+#   source_type  - mock | rss | company_page | manual_reference | future
+#   url          - feed or page URL (where applicable)
+#   notes        - human-readable description or context
+#   priority     - lower = higher priority in display/processing order
+
+sources:
+
+  # ── Demo / testing ──────────────────────────────────────────────────────────
+  - name: mock
+    enabled: true
+    source_type: mock
+    notes: >
+      Hardcoded demo jobs used for development, testing, and offline demos.
+      Always available — no network required.
+    priority: 0
+
+  # ── RSS feeds (active) ──────────────────────────────────────────────────────
+  - name: weworkremotely
+    enabled: true
+    source_type: rss
+    url: "https://weworkremotely.com/categories/remote-programming-jobs.rss"
+    notes: >
+      We Work Remotely — remote programming jobs RSS feed.
+      Public and stable. No auth required.
+    priority: 1
+
+  - name: remoteok
+    enabled: true
+    source_type: rss
+    url: "https://remoteok.com/remote-jobs.rss"
+    notes: >
+      RemoteOK — remote jobs RSS feed.
+      Public and stable. No auth required.
+    priority: 2
+
+  # ── Manual reference sites ──────────────────────────────────────────────────
+  - name: linkedin
+    enabled: false
+    source_type: manual_reference
+    url: "https://www.linkedin.com/jobs/"
+    notes: >
+      LinkedIn Jobs — NOT actively scraped.
+      LinkedIn's Terms of Service prohibit automated scraping.
+      Direct API access requires an approved partner agreement.
+      Use manually: browse LinkedIn directly and copy interesting job
+      descriptions into the system via a future manual-import feature (V2).
+      Included here as a reference placeholder only.
+    priority: 99
+
+  - name: indeed
+    enabled: false
+    source_type: manual_reference
+    url: "https://www.indeed.com/"
+    notes: >
+      Indeed — NOT actively scraped.
+      Indeed's ToS restricts scraping. A paid API is available but not
+      implemented in V1/V1.5. Marked as manual_reference.
+    priority: 99
+
+  # ── ATS collectors (V2.5) ───────────────────────────────────────────────────
+  # To enable Greenhouse: set enabled: true and add company slugs to the
+  # companies list. Slugs are found in the board URL:
+  #   https://boards.greenhouse.io/{slug}
+  - name: greenhouse
+    enabled: false
+    source_type: greenhouse
+    companies: []
+    # companies:
+    #   - anthropic
+    #   - openai
+    #   - stripe
+    notes: >
+      Greenhouse ATS public boards. No auth required.
+      API: https://boards-api.greenhouse.io/v1/boards/{company}/jobs
+      Add company slugs to the companies list above and set enabled: true.
+    priority: 10
+
+  # To enable Lever: set enabled: true and add company slugs.
+  # Slugs are found in the board URL: https://jobs.lever.co/{slug}
+  - name: lever
+    enabled: false
+    source_type: lever
+    companies: []
+    # companies:
+    #   - netflix
+    #   - github
+    notes: >
+      Lever ATS public boards. No auth required.
+      API: https://api.lever.co/v0/postings/{company}
+      Add company slugs to the companies list above and set enabled: true.
+    priority: 11
+
+  # To enable HN hiring: set enabled: true.
+  - name: hackernews_whoishiring
+    enabled: false
+    source_type: hackernews
+    max_jobs: 100
+    notes: >
+      Hacker News "Ask HN: Who is Hiring?" monthly thread.
+      Fetched via Algolia HN API — no auth required.
+      max_jobs controls how many comments are collected (default: 100).
+    priority: 12
+
+  # ── Manual reference sites ──────────────────────────────────────────────────

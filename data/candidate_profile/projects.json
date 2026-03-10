@@ -1,0 +1,17 @@
+[
+  {
+    "name": "RAG-powered Customer Support Bot",
+    "description": "Built a retrieval-augmented generation system using LangChain, OpenAI embeddings, and a vector database. Deployed via FastAPI on AWS with Docker.",
+    "technologies": ["Python", "LangChain", "OpenAI", "FastAPI", "Docker", "AWS", "ChromaDB"]
+  },
+  {
+    "name": "MLOps Training Pipeline on AWS",
+    "description": "Designed and deployed an end-to-end ML training and serving pipeline on AWS SageMaker with Terraform infrastructure-as-code.",
+    "technologies": ["Python", "AWS", "SageMaker", "Terraform", "Docker", "GitHub Actions"]
+  },
+  {
+    "name": "AI Career Agent (this project)",
+    "description": "Modular job discovery platform with rules-based and semantic scoring, LLM integration layer, and Streamlit dashboard.",
+    "technologies": ["Python", "Streamlit", "SQLite", "SQLAlchemy", "Docker", "LLM"]
+  }
+]

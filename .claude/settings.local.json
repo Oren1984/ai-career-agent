@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install:*)",
+      "Bash(python:*)",
+      "Bash(ls \"C:/Users/ORENS/ai-career-agent/\"*.md 2>/dev/null | head -20)"
+    ]
+  }
+}

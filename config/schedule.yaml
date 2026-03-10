@@ -1,0 +1,34 @@
+# Scheduler configuration for AI Career Agent V2
+# Used by scripts/run_scheduler.py
+
+scheduler:
+  enabled: true
+  timezone: "UTC"
+
+  jobs:
+    collect:
+      # Collect new jobs every 6 hours
+      cron: "0 */6 * * *"
+      sources: "all"         # all | mock | rss
+      include_mock: false    # set true for demo/testing
+
+    score:
+      # Score new jobs 30 minutes after each collection run
+      cron: "30 */6 * * *"
+
+  # APScheduler settings
+  job_defaults:
+    misfire_grace_time: 300   # seconds — how late a job can be before it's skipped
+    coalesce: true            # merge missed runs into one
+
+# Example: run every hour instead
+# collect:
+#   cron: "0 * * * *"
+# score:
+#   cron: "30 * * * *"
+
+# Example: run twice daily (9am and 6pm UTC)
+# collect:
+#   cron: "0 9,18 * * *"
+# score:
+#   cron: "30 9,18 * * *"

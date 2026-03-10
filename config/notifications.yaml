@@ -1,0 +1,32 @@
+# Notifications configuration — AI Career Agent V3
+# Sent log: data/notifications_sent.json (tracks which jobs have been notified)
+#
+# Set enabled: true and fill in credentials for each channel you want to use.
+# Notifications fire when the scheduler finds new high-match jobs.
+# Each job is notified at most once.
+
+notifications:
+
+  email:
+    enabled: false
+    smtp_server: smtp.gmail.com
+    smtp_port: 587
+    smtp_user: ""              # your email address
+    smtp_password: ""          # SMTP password or App Password
+    recipient: ""              # leave blank to send to smtp_user
+    use_tls: true
+
+  slack:
+    enabled: false
+    webhook_url: ""            # Slack Incoming Webhook URL
+                               # https://api.slack.com/messaging/webhooks
+
+  telegram:
+    enabled: false
+    bot_token: ""              # from @BotFather
+    chat_id: ""                # your chat ID or group ID
+
+# Notification trigger settings
+trigger:
+  match_level: high            # only notify for jobs at this level or above
+  min_score: 8.0               # minimum final_score to trigger (default: high threshold)

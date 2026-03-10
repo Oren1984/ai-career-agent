@@ -1,0 +1,7 @@
+{
+  "ai_ml": ["LLM", "RAG", "Embeddings", "Fine-tuning", "Prompt Engineering", "MLOps", "AI/ML"],
+  "python": ["Python", "FastAPI", "Pydantic", "SQLAlchemy", "PyTest", "asyncio"],
+  "cloud_infra": ["AWS", "Terraform", "Docker", "GitHub Actions", "CI/CD"],
+  "data": ["SQL", "PostgreSQL", "SQLite", "Data Pipelines"],
+  "tools": ["Git", "Linux", "REST APIs", "OpenAI API", "Anthropic API"]
+}
