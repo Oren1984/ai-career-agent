@@ -18,7 +18,7 @@ Each company slug is the identifier used in their Greenhouse board URL,
 e.g. https://boards.greenhouse.io/anthropic → slug is "anthropic".
 """
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
 
 try:
@@ -100,9 +100,9 @@ class GreenhouseCollector(BaseCollector):
         # updated_at if available, else now
         updated = job.get("updated_at", "")
         try:
-            date_found = datetime.fromisoformat(updated.replace("Z", "+00:00")) if updated else datetime.utcnow()
+            date_found = datetime.fromisoformat(updated.replace("Z", "+00:00")) if updated else datetime.now(timezone.utc).replace(tzinfo=None)
         except Exception:
-            date_found = datetime.utcnow()
+            date_found = datetime.now(timezone.utc).replace(tzinfo=None)
 
         return RawJob(
             title=title,

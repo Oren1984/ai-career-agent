@@ -1,3 +1,6 @@
+# tests/test_analytics.py
+# This file is part of the OpenLLM project issue tracker:
+
 """Tests for V2 analytics — source analytics and improved service stats."""
 import json
 import pytest

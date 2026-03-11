@@ -1,3 +1,6 @@
+# tests/test_source_loader.py
+# This file is part of the OpenLLM project issue tracker:
+
 """Tests for source configuration loading and collector instantiation."""
 import os
 import pytest

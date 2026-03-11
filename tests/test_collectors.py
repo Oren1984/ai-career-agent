@@ -1,3 +1,6 @@
+# tests/test_collectors.py
+# This file is part of the OpenLLM project issue tracker:
+
 """Tests for job collectors."""
 import pytest
 from app.collectors.mock_collector import MockCollector

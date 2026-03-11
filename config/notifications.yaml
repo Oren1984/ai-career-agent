@@ -2,7 +2,7 @@
 
 # Notifications configuration — AI Career Agent V3
 # Sent log: data/notifications_sent.json (tracks which jobs have been notified)
-#
+
 # Set enabled: true and fill in credentials for each channel you want to use.
 # Notifications fire when the scheduler finds new high-match jobs.
 # Each job is notified at most once.

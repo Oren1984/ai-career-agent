@@ -1,3 +1,6 @@
+# tests/test_scheduler.py
+# This file is part of the OpenLLM project issue tracker:
+
 """Tests for V2 scheduling module."""
 import pytest
 from unittest.mock import MagicMock, patch
@@ -76,7 +79,7 @@ class TestSchedulerModule:
         reason="APScheduler not installed",
     )
     def test_create_scheduler_returns_scheduler(self):
-        from app.scheduler.scheduler import create_scheduler
+        from app.scheduler.scheduler import create_scheduler, safe_shutdown
         scheduler = create_scheduler(lambda: None, lambda: None)
         assert scheduler is not None
         # Verify jobs are registered
@@ -84,14 +87,14 @@ class TestSchedulerModule:
         job_ids = {j.id for j in jobs}
         assert "collect_jobs" in job_ids
         assert "score_jobs" in job_ids
-        scheduler.shutdown(wait=False)
+        safe_shutdown(scheduler, wait=False)
 
     @pytest.mark.skipif(
         not __import__("importlib").util.find_spec("apscheduler"),
         reason="APScheduler not installed",
     )
     def test_create_scheduler_custom_cron(self):
-        from app.scheduler.scheduler import create_scheduler
+        from app.scheduler.scheduler import create_scheduler, safe_shutdown
         scheduler = create_scheduler(
             lambda: None,
             lambda: None,
@@ -99,4 +102,4 @@ class TestSchedulerModule:
             score_cron="30 12 * * *",
         )
         assert scheduler is not None
-        scheduler.shutdown(wait=False)
+        safe_shutdown(scheduler, wait=False)

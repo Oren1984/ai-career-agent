@@ -1,3 +1,6 @@
+# tests/test_session_robustness.py
+# This file is part of the OpenLLM project issue tracker:
+
 """Tests for session robustness: rollback handling, recovery after exceptions."""
 import pytest
 from sqlalchemy import create_engine

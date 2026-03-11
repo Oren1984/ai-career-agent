@@ -120,3 +120,27 @@ def run_once(collect_fn: Callable, score_fn: Callable) -> dict[str, str]:
 def is_available() -> bool:
     """Return True if APScheduler is installed and scheduling is available."""
     return _apscheduler_available()
+
+
+def safe_shutdown(scheduler, wait: bool = False) -> None:
+    """
+    Shut down a BackgroundScheduler only if it is currently running.
+
+    APScheduler raises SchedulerNotRunningError when shutdown() is called on
+    a scheduler that was never started. This helper silences that case so
+    tests and teardown code do not need to track whether start() was called.
+
+    Args:
+        scheduler: A BackgroundScheduler (or any APScheduler scheduler).
+        wait:      Passed directly to scheduler.shutdown().
+    """
+    if not _apscheduler_available():
+        return
+    try:
+        from apscheduler.schedulers.base import STATE_STOPPED
+        if scheduler.state != STATE_STOPPED:
+            scheduler.shutdown(wait=wait)
+        else:
+            logger.debug("safe_shutdown: scheduler is already stopped — nothing to do")
+    except Exception as exc:
+        logger.debug("safe_shutdown: ignoring shutdown error: %s", exc)

@@ -3,7 +3,8 @@
     "allow": [
       "Bash(pip install:*)",
       "Bash(python:*)",
-      "Bash(ls \"C:/Users/ORENS/ai-career-agent/\"*.md 2>/dev/null | head -20)"
+      "Bash(ls \"C:/Users/ORENS/ai-career-agent/\"*.md 2>/dev/null | head -20)",
+      "Bash(mkdir -p \"C:/Users/ORENS/ai-career-agent/app/collectors/israel\" \"C:/Users/ORENS/ai-career-agent/app/dedup\" \"C:/Users/ORENS/ai-career-agent/app/integrations/gmail\" \"C:/Users/ORENS/ai-career-agent/automation/n8n/workflows\" \"C:/Users/ORENS/ai-career-agent/automation/bridge\" \".github/workflows\"\nmkdir -p \"C:/Users/ORENS/ai-career-agent/.github/workflows\")"
     ]
   }
 }

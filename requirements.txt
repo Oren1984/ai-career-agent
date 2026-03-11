@@ -21,3 +21,15 @@ apscheduler>=3.10.0
 # openai>=1.0.0              # OpenAI — set OPENAI_API_KEY
 # google-generativeai>=0.5.0 # Gemini — set GOOGLE_API_KEY
 # ollama runs locally; no Python package required beyond requests (already installed)
+
+
+# Resume parsing
+pypdf>=4.0.0
+pdfminer.six>=20231228
+
+# Optional fuzzy dedup
+rapidfuzz>=3.6.0
+
+# Security tools (CI)
+bandit>=1.7.7
+pip-audit>=2.7.0

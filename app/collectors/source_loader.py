@@ -140,6 +140,40 @@ def load_collectors(
             collectors.append(HackerNewsHiringCollector(max_jobs=max_jobs))
             logger.info("Loaded HackerNewsHiringCollector (max_jobs=%d)", max_jobs)
 
+        elif source_type == "drushim":
+            search_query = source.get("search_query", "python")
+            max_jobs = source.get("max_jobs", 50)
+            from app.collectors.israel.drushim_collector import DrushimCollector
+            collectors.append(DrushimCollector(search_query=search_query, max_jobs=max_jobs))
+            logger.info("Loaded DrushimCollector (query=%s, max=%d)", search_query, max_jobs)
+
+        elif source_type == "alljobs":
+            search_query = source.get("search_query", "python")
+            max_jobs = source.get("max_jobs", 50)
+            from app.collectors.israel.alljobs_collector import AllJobsCollector
+            collectors.append(AllJobsCollector(search_query=search_query, max_jobs=max_jobs))
+            logger.info("Loaded AllJobsCollector (query=%s, max=%d)", search_query, max_jobs)
+
+        elif source_type == "jobnet":
+            from app.collectors.israel.jobnet_collector import JobNetCollector
+            collectors.append(JobNetCollector())
+            logger.info("Loaded JobNetCollector (disabled — returns empty list)")
+
+        elif source_type == "jobkarov":
+            from app.collectors.israel.jobkarov_collector import JobKarovCollector
+            collectors.append(JobKarovCollector())
+            logger.info("Loaded JobKarovCollector (disabled — returns empty list)")
+
+        elif source_type == "jobmaster":
+            from app.collectors.israel.jobmaster_collector import JobMasterCollector
+            collectors.append(JobMasterCollector())
+            logger.info("Loaded JobMasterCollector (disabled — returns empty list)")
+
+        elif source_type == "jobify360":
+            from app.collectors.israel.jobify360_collector import Jobify360Collector
+            collectors.append(Jobify360Collector())
+            logger.info("Loaded Jobify360Collector (disabled — returns empty list)")
+
         elif source_type in ("company_page", "manual_reference", "future"):
             logger.debug(
                 "Source '%s' (type=%s) is not auto-collectable — skipping",

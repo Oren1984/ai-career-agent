@@ -1,6 +1,6 @@
 # config/sources.yaml
 # Source registry for AI Career Agent
-#
+
 # Each source entry supports:
 #   name         - unique identifier
 #   enabled      - whether this source is active (true/false)
@@ -106,5 +106,69 @@ sources:
       Fetched via Algolia HN API — no auth required.
       max_jobs controls how many comments are collected (default: 100).
     priority: 12
+
+  # ── Israeli job boards ──────────────────────────────────────────────────────
+  # These use the app/collectors/israel/ collector classes.
+  # source_type values: drushim | alljobs | jobnet | jobkarov | jobmaster | jobify360
+  #
+  # To enable a source: set enabled: true
+  # Drushim and AllJobs are mock-safe (return demo data until real scraping is implemented).
+  # The others are DISABLED/planned — they return empty lists.
+
+  - name: drushim
+    enabled: true
+    source_type: drushim
+    search_query: "python developer"
+    max_jobs: 50
+    notes: >
+      Drushim.co.il — Israel's largest job board.
+      STATUS: Enabled (mock-safe). Real scraping not yet implemented.
+      Returns hardcoded demo jobs until HTTP scraping is built.
+      See app/collectors/israel/drushim_collector.py for TODOs.
+    priority: 20
+
+  - name: alljobs
+    enabled: true
+    source_type: alljobs
+    search_query: "python"
+    max_jobs: 50
+    notes: >
+      AllJobs.co.il — Israel's second-largest job board.
+      STATUS: Enabled (mock-safe). Real scraping not yet implemented.
+      Returns hardcoded demo jobs until HTTP scraping is built.
+      See app/collectors/israel/alljobs_collector.py for TODOs.
+    priority: 21
+
+  - name: jobnet
+    enabled: false
+    source_type: jobnet
+    notes: >
+      JobNet.co.il — DISABLED / PLANNED.
+      Returns empty list. Implement app/collectors/israel/jobnet_collector.py first.
+    priority: 30
+
+  - name: jobkarov
+    enabled: false
+    source_type: jobkarov
+    notes: >
+      JobKarov — DISABLED / PLANNED.
+      Returns empty list. Implement app/collectors/israel/jobkarov_collector.py first.
+    priority: 31
+
+  - name: jobmaster
+    enabled: false
+    source_type: jobmaster
+    notes: >
+      JobMaster.co.il — DISABLED / PLANNED.
+      Returns empty list. Implement app/collectors/israel/jobmaster_collector.py first.
+    priority: 32
+
+  - name: jobify360
+    enabled: false
+    source_type: jobify360
+    notes: >
+      Jobify360 — DISABLED / PLANNED.
+      Returns empty list. Implement app/collectors/israel/jobify360_collector.py first.
+    priority: 33
 
   # ── Manual reference sites ──────────────────────────────────────────────────

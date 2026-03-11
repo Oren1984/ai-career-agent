@@ -1,3 +1,6 @@
+# tests/test_dashboard.py
+# This file is part of the OpenLLM project issue tracker:
+
 """Sanity tests for dashboard module import and key function availability."""
 import pytest
 import importlib

@@ -1,3 +1,6 @@
+# tests/test_candidate_profile.py
+# This file is part of the OpenLLM project issue tracker:
+
 """Tests for V2 candidate profile loader."""
 import json
 import tempfile

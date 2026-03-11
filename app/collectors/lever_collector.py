@@ -17,7 +17,7 @@ Each company slug is the identifier used in their Lever board URL,
 e.g. https://jobs.lever.co/netflix → slug is "netflix".
 """
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
 
 try:
@@ -109,9 +109,9 @@ class LeverCollector(BaseCollector):
         # createdAt is a Unix ms timestamp
         created_ms = posting.get("createdAt", 0)
         try:
-            date_found = datetime.utcfromtimestamp(created_ms / 1000) if created_ms else datetime.utcnow()
+            date_found = datetime.fromtimestamp(created_ms / 1000, tz=timezone.utc).replace(tzinfo=None) if created_ms else datetime.now(timezone.utc).replace(tzinfo=None)
         except Exception:
-            date_found = datetime.utcnow()
+            date_found = datetime.now(timezone.utc).replace(tzinfo=None)
 
         return RawJob(
             title=title,

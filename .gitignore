@@ -18,6 +18,10 @@ data/*.db
 *.egg-info/
 dist/
 
-# logs
+# IDE files
 build/
 .DS_Store
+
+# logs
+logs/
+*.log

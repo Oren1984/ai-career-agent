@@ -1,9 +1,14 @@
 # dashboard/streamlit_app.py
-# this file is part of the OpenLLM project issue tracker:
+# This file is part of the OpenLLM project issue tracker:
 
-"""AI Career Agent — Streamlit Dashboard (v2.5)."""
+"""AI Career Agent — Streamlit Dashboard (V1).
+
+V1 Platform: Israeli sources (Drushim, AllJobs) + RSS + Mock
+Sources are configured in config/sources.yaml.
+"""
 import sys
 import os
+import subprocess
 import logging
 
 # Allow running from any working directory
@@ -15,12 +20,17 @@ from app.services.job_service import JobService, VALID_STATUSES
 
 logger = logging.getLogger(__name__)
 
+_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_SCRIPTS_DIR = os.path.join(_REPO_ROOT, "scripts")
+_PYTHON = sys.executable
+
 # ── Page config ────────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="AI Career Agent",
+    page_title="AI Career Agent — V1",
     page_icon="🤖",
     layout="wide",
 )
+
 
 # ── DB bootstrap ───────────────────────────────────────────────────────────────
 @st.cache_resource
@@ -34,19 +44,96 @@ def _get_session_factory():
 
 
 def get_service() -> JobService:
-    """
-    Create a fresh JobService with a new session for each call.
-
-    Using a fresh session per operation prevents SQLAlchemy session state
-    errors (PendingRollbackError, IllegalStateChangeError) that occur when
-    a single long-lived cached session is shared across Streamlit reruns.
-    """
+    """Create a fresh JobService with a new session for each call."""
     factory = _get_session_factory()
     session = factory()
     return JobService(session)
 
 
-# ── Candidate profile (cached, lightweight) ───────────────────────────────────
+# ── Source mode detection ──────────────────────────────────────────────────────
+def _detect_source_mode() -> str:
+    """
+    Detect the current source mode from SOURCE_MODE env var or sources.yaml.
+
+    Priority:
+      1. SOURCE_MODE environment variable
+      2. Enabled source types in config/sources.yaml
+      3. Default: "mock"
+    """
+    env_mode = os.environ.get("SOURCE_MODE", "").lower().strip()
+    if env_mode in ("mock", "rss", "israel", "all"):
+        return env_mode
+
+    # Detect from sources.yaml
+    try:
+        import yaml
+        sources_path = os.path.join(_REPO_ROOT, "config", "sources.yaml")
+        with open(sources_path, "r", encoding="utf-8") as fh:
+            data = yaml.safe_load(fh)
+        sources = data.get("sources", [])
+        enabled_types = {
+            s["source_type"]
+            for s in sources
+            if s.get("enabled", False)
+        }
+        israel_types = {"drushim", "alljobs", "jobnet", "jobkarov", "jobmaster", "jobify360"}
+        has_israel = bool(enabled_types & israel_types)
+        has_rss = "rss" in enabled_types
+        has_mock = "mock" in enabled_types
+
+        if has_israel and has_rss:
+            return "all"
+        elif has_israel:
+            return "israel"
+        elif has_rss:
+            return "rss"
+        elif has_mock:
+            return "mock"
+    except Exception:
+        pass
+    return "mock"
+
+
+@st.cache_data(ttl=60)
+def _get_source_mode() -> str:
+    return _detect_source_mode()
+
+
+_MODE_LABELS = {
+    "mock":   "Mock (demo data)",
+    "rss":    "RSS Feeds",
+    "israel": "Israeli Sources (Drushim + AllJobs)",
+    "all":    "All Sources",
+}
+
+_MODE_COLORS = {
+    "mock":   "gray",
+    "rss":    "blue",
+    "israel": "green",
+    "all":    "orange",
+}
+
+
+def _run_script(script_name: str, *args: str) -> tuple[bool, str]:
+    """Run a script via subprocess and return (success, output)."""
+    cmd = [_PYTHON, os.path.join(_SCRIPTS_DIR, script_name)] + list(args)
+    try:
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=120,
+            cwd=_REPO_ROOT,
+        )
+        output = result.stdout + (f"\n[stderr]\n{result.stderr}" if result.stderr.strip() else "")
+        return result.returncode == 0, output.strip()
+    except subprocess.TimeoutExpired:
+        return False, "Script timed out after 120 seconds."
+    except Exception as exc:
+        return False, f"Failed to run script: {exc}"
+
+
+# ── Candidate profile (cached) ─────────────────────────────────────────────────
 @st.cache_resource
 def _load_candidate_profile():
     try:
@@ -68,83 +155,109 @@ def _get_llm_provider_name() -> str:
         return "mock"
 
 
+# ── Detect current mode ────────────────────────────────────────────────────────
+source_mode = _get_source_mode()
+mode_label = _MODE_LABELS.get(source_mode, source_mode)
+
 # ── Sidebar ────────────────────────────────────────────────────────────────────
 st.sidebar.title("AI Career Agent")
-st.sidebar.caption("v2.5 — Decision support only")
+st.sidebar.caption("V1 Platform — Israeli & Global Sources")
 st.sidebar.markdown("---")
 
-# Filters
-st.sidebar.subheader("Filters")
+# Source mode indicator
+st.sidebar.subheader("Source Mode")
+mode_color = _MODE_COLORS.get(source_mode, "gray")
+st.sidebar.markdown(
+    f'<span style="background-color:{mode_color};color:white;'
+    f'padding:3px 10px;border-radius:12px;font-weight:bold;font-size:0.85em;">'
+    f'  {mode_label}'
+    f'</span>',
+    unsafe_allow_html=True,
+)
+st.sidebar.caption("Set `SOURCE_MODE` env var to override (mock/rss/israel/all)")
+st.sidebar.markdown("---")
 
+# ── Filters ────────────────────────────────────────────────────────────────────
+st.sidebar.subheader("Filters")
 status_options = ["all"] + sorted(VALID_STATUSES)
 selected_status = st.sidebar.selectbox("Status", status_options, index=0)
-
 match_level_options = ["all", "high", "medium", "low", "unscored"]
 selected_level = st.sidebar.selectbox("Match Level", match_level_options, index=0)
-
 text_search = st.sidebar.text_input("Search (title / company / description)", "")
 
 st.sidebar.markdown("---")
+
+# ── Quick Actions ──────────────────────────────────────────────────────────────
 st.sidebar.subheader("Quick Actions")
 
-col_a, col_b = st.sidebar.columns(2)
+# Fetch buttons — one per source mode
+if st.sidebar.button("Fetch Mock Jobs", use_container_width=True,
+                     help="Load hardcoded demo jobs (no network needed)"):
+    with st.sidebar:
+        with st.spinner("Fetching mock jobs..."):
+            ok, out = _run_script("fetch_jobs.py", "--mode", "mock")
+    if ok:
+        st.sidebar.success("Mock jobs fetched.")
+    else:
+        st.sidebar.error(f"Fetch failed:\n{out[:400]}")
+    st.rerun()
 
-with col_a:
-    if st.button("Fetch (Mock)", use_container_width=True):
-        try:
-            from app.collectors.mock_collector import MockCollector
-            svc = get_service()
-            stats = svc.run_collectors([MockCollector()])
-            st.sidebar.success(
-                f"Inserted {stats['inserted']} jobs ({stats['skipped']} dupes skipped)"
-            )
-        except Exception as exc:
-            st.sidebar.error(f"Fetch failed: {exc}")
-        finally:
-            st.rerun()
+if st.sidebar.button("Fetch RSS Jobs", use_container_width=True,
+                     help="Fetch from RSS feeds (requires network)"):
+    with st.sidebar:
+        with st.spinner("Fetching RSS feeds..."):
+            ok, out = _run_script("fetch_jobs.py", "--mode", "rss")
+    if ok:
+        st.sidebar.success("RSS jobs fetched.")
+    else:
+        st.sidebar.warning(f"RSS fetch finished with issues:\n{out[:400]}")
+    st.rerun()
 
-with col_b:
-    if st.button("Score All", use_container_width=True):
-        try:
-            svc = get_service()
-            n = svc.score_all_unscored()
-            st.sidebar.success(f"Scored {n} jobs")
-        except Exception as exc:
-            st.sidebar.error(f"Scoring failed: {exc}")
-        finally:
-            st.rerun()
+if st.sidebar.button("Fetch Israeli Jobs", use_container_width=True,
+                     help="Fetch from Drushim + AllJobs (currently mock-safe)"):
+    with st.sidebar:
+        with st.spinner("Fetching Israeli source jobs..."):
+            ok, out = _run_script("fetch_jobs.py", "--mode", "israel")
+    if ok:
+        st.sidebar.success("Israeli source jobs fetched.")
+    else:
+        st.sidebar.error(f"Fetch failed:\n{out[:400]}")
+    st.rerun()
 
-if st.sidebar.button("Fetch via RSS", use_container_width=True):
-    try:
-        from app.collectors.rss_collector import RSSCollector
-        svc = get_service()
-        with st.sidebar:
-            with st.spinner("Fetching RSS feeds…"):
-                stats = svc.run_collectors([RSSCollector()])
-        if stats.get("errors", 0) > 0:
-            st.sidebar.warning(
-                f"Inserted {stats['inserted']} jobs ({stats['skipped']} dupes). "
-                f"{stats['errors']} feed(s) failed — check logs."
-            )
-        else:
-            st.sidebar.success(
-                f"Inserted {stats['inserted']} jobs ({stats['skipped']} dupes skipped)"
-            )
-    except Exception as exc:
-        st.sidebar.error(f"RSS fetch failed: {exc}")
-    finally:
-        st.rerun()
+if st.sidebar.button("Score Jobs", use_container_width=True,
+                     help="Score all unscored jobs against your candidate profile"):
+    with st.sidebar:
+        with st.spinner("Scoring jobs..."):
+            ok, out = _run_script("score_jobs.py")
+    if ok:
+        st.sidebar.success("Scoring complete.")
+    else:
+        st.sidebar.error(f"Scoring failed:\n{out[:400]}")
+    st.rerun()
 
-# V2: LLM provider status in sidebar
+if st.sidebar.button("Reset Demo State", use_container_width=True,
+                     help="Drop and recreate DB, fetch Israeli demo jobs, score them"):
+    with st.sidebar:
+        with st.spinner("Resetting demo state (this may take a moment)..."):
+            ok, out = _run_script("reset_demo_state.py", "--mode", "israel")
+    if ok:
+        st.sidebar.success("Demo state reset. Dashboard refreshed.")
+        # Clear the session factory cache so it picks up the new DB
+        _get_session_factory.clear()
+    else:
+        st.sidebar.error(f"Reset failed:\n{out[:400]}")
+    st.rerun()
+
+# LLM status
 st.sidebar.markdown("---")
-st.sidebar.subheader("V2 Status")
+st.sidebar.subheader("LLM Status")
 provider_name = _get_llm_provider_name()
 provider_icon = "🟢" if provider_name != "mock" else "⚪"
-st.sidebar.caption(f"LLM Provider: {provider_icon} {provider_name}")
+st.sidebar.caption(f"Provider: {provider_icon} {provider_name}")
 st.sidebar.caption("Scoring: keyword + semantic")
 
 # ── Main area ──────────────────────────────────────────────────────────────────
-st.title("AI Career Agent Dashboard")
+st.title("AI Career Agent — V1 Dashboard")
 
 try:
     service = get_service()
@@ -163,11 +276,33 @@ m5.metric("New / Unreviewed", summary["status_counts"].get("new", 0))
 
 st.markdown("---")
 
-# ── V2 Tabs: Jobs | Analytics | Profile ───────────────────────────────────────
+# ── Tabs ───────────────────────────────────────────────────────────────────────
 tab_jobs, tab_analytics, tab_profile = st.tabs(["Jobs", "Analytics", "Candidate Profile"])
 
 # ── Tab: Jobs ─────────────────────────────────────────────────────────────────
 with tab_jobs:
+    # Data source banner
+    try:
+        svc_for_analytics = get_service()
+        analytics = svc_for_analytics.get_source_analytics()
+        by_source = analytics.get("by_source", {}) if analytics else {}
+    except Exception:
+        by_source = {}
+
+    if by_source:
+        source_names = ", ".join(
+            f"**{src}** ({cnt})" for src, cnt in sorted(by_source.items(), key=lambda x: -x[1])
+        )
+        st.info(
+            f"Current data sources: {source_names}. "
+            "Use the Quick Actions in the sidebar to fetch or reset data."
+        )
+    else:
+        st.info(
+            "No jobs in the database yet. "
+            "Use **Fetch Israeli Jobs**, **Fetch Mock Jobs**, or **Fetch RSS Jobs** in the sidebar."
+        )
+
     try:
         jobs = service.get_jobs_with_scores(
             status_filter=selected_status if selected_status != "all" else None,
@@ -181,7 +316,10 @@ with tab_jobs:
     st.subheader(f"Jobs ({len(jobs)} shown)")
 
     if not jobs:
-        st.info("No jobs found. Click **Fetch (Mock)** in the sidebar to load demo data.")
+        st.info(
+            "No jobs match the current filters. "
+            "Try changing the filters or fetching more jobs."
+        )
     else:
         _LEVEL_COLOR = {
             "high": "🟢",
@@ -190,7 +328,6 @@ with tab_jobs:
             "unscored": "⚪",
         }
 
-        # Table header
         hcols = st.columns([3, 2, 2, 1, 1, 1, 2])
         hcols[0].markdown("**Title**")
         hcols[1].markdown("**Company**")
@@ -200,8 +337,6 @@ with tab_jobs:
         hcols[5].markdown("**Level**")
         hcols[6].markdown("**Status**")
         st.markdown("---")
-
-        selected_job_id = st.session_state.get("selected_job_id")
 
         for job in jobs:
             jid = job["id"]
@@ -258,7 +393,6 @@ with tab_jobs:
                 with d2:
                     badge = _LEVEL_COLOR.get(detail["match_level"], "⚪")
 
-                    # V2 score display
                     kw_score = detail.get("keyword_score")
                     sem_score = detail.get("semantic_score")
                     final_score = detail.get("final_score") or detail["match_score"]
@@ -295,7 +429,7 @@ with tab_jobs:
                     st.markdown("**Explanation:**")
                     st.write(detail["explanation"])
 
-                    # ── V2.5: AI Analysis (user-triggered) ────────────────────
+                    # ── AI Analysis (user-triggered) ───────────────────────────
                     st.markdown("---")
                     st.markdown("**AI Analysis**")
 
@@ -314,7 +448,7 @@ with tab_jobs:
                             key=f"llm_{selected_id}",
                             help=f"Analyse this job with the {provider_name} provider",
                         ):
-                            with st.spinner("Analysing…"):
+                            with st.spinner("Analysing..."):
                                 try:
                                     from app.llm.provider_factory import get_provider
                                     from app.candidate.profile_loader import load_candidate_profile
@@ -391,7 +525,6 @@ with tab_analytics:
                 icon = level_icons.get(lvl, "")
                 st.write(f"{icon} **{lvl.capitalize()}**: {count}")
 
-        # Simple bar chart using native Streamlit
         st.markdown("---")
         st.markdown("**Match Level Distribution**")
         level_data = {k.capitalize(): v for k, v in analytics["by_level"].items() if v > 0}
@@ -452,6 +585,7 @@ with tab_profile:
 # ── Footer ─────────────────────────────────────────────────────────────────────
 st.markdown("---")
 st.caption(
-    "AI Career Agent v2.5 — Decision support only. "
-    "This system does not submit job applications automatically."
+    "AI Career Agent V1 — Decision support only. "
+    "This system does not submit job applications automatically. "
+    f"| Current mode: {mode_label}"
 )
