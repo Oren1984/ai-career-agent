@@ -21,10 +21,9 @@ Usage:
     engine.add(existing_job)
     is_dup = engine.is_duplicate(new_job)
 """
-import hashlib
 import logging
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any
 
 logger = logging.getLogger(__name__)

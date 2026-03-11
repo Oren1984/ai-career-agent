@@ -3,7 +3,6 @@
 
 """Tests for V3 resume parser — text extraction, keyword fallback, LLM extraction, file writing."""
 import json
-import tempfile
 import pytest
 from pathlib import Path
 from unittest.mock import patch, MagicMock

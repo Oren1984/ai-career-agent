@@ -2,14 +2,10 @@
 # This file is part of the OpenLLM project issue tracker:
 
 """Tests for V2 analytics — source analytics and improved service stats."""
-import json
-import pytest
-
-from app.db.models import Job, Score
+from app.db.models import Score
 from app.db.normalizer import insert_jobs_dedup
 from app.collectors.base import RawJob
 from app.services.job_service import JobService
-from app.matching.combined_scorer import CombinedScorer
 
 
 def _make_raw_job(title, company, source, description=""):

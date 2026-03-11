@@ -6,12 +6,12 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-import logging
+import logging  # noqa: E402
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
 
-from app.db.session import init_db, get_session
-from app.services.job_service import JobService
+from app.db.session import init_db, get_session  # noqa: E402
+from app.services.job_service import JobService  # noqa: E402
 
 
 def main():
@@ -23,7 +23,7 @@ def main():
         count = service.score_all_unscored()
         stats = service.get_summary_stats()
 
-        print(f"\nScoring complete:")
+        print("\nScoring complete:")
         print(f"  Jobs scored      : {count}")
         print(f"  Total jobs in DB : {stats['total_jobs']}")
         print(f"  High matches     : {stats['high_match']}")

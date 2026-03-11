@@ -2,8 +2,6 @@
 # This file is part of the OpenLLM project issue tracker:
 
 """Tests for V2.5 collectors — Greenhouse, Lever, HackerNews."""
-import json
-import pytest
 from unittest.mock import patch, MagicMock
 
 from app.collectors.base import RawJob

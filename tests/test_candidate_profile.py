@@ -3,18 +3,14 @@
 
 """Tests for V2 candidate profile loader."""
 import json
-import tempfile
-import os
 from pathlib import Path
-
-import pytest
 
 from app.candidate.profile_loader import load_candidate_profile, CandidateProfile
 
 
 class TestCandidateProfileLoader:
     def _make_profile_dir(self, tmp_path: Path, summary: str | None = None,
-                           skills: dict | None = None, projects: list | None = None):
+                          skills: dict | None = None, projects: list | None = None):
         """Helper: write candidate profile files into a temp directory."""
         if summary is not None:
             (tmp_path / "summary.txt").write_text(summary, encoding="utf-8")

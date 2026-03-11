@@ -4,7 +4,8 @@
 """Abstract LLM provider interface — future-ready for V2 integration."""
 from abc import ABC, abstractmethod
 
-# Note: This is a placeholder for the V2 refactor. 
+
+# Note: This is a placeholder for the V2 refactor.
 # The current implementation in V1 is in llm/providers.py.
 class BaseLLMProvider(ABC):
     """
@@ -30,7 +31,7 @@ class BaseLLMProvider(ABC):
         """
         ...
 
-    # This method can be used to check if the provider is properly configured 
+    # This method can be used to check if the provider is properly configured
     # and reachable before attempting to use it.
     @abstractmethod
     def is_available(self) -> bool:

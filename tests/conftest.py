@@ -7,7 +7,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.db.models import Base
-from app.db.session import init_db
 
 
 @pytest.fixture(scope="function")

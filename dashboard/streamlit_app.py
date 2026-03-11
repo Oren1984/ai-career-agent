@@ -14,9 +14,9 @@ import logging
 # Allow running from any working directory
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-import streamlit as st
-from app.db.session import init_db, get_session_factory
-from app.services.job_service import JobService, VALID_STATUSES
+import streamlit as st  # noqa: E402
+from app.db.session import init_db, get_session_factory  # noqa: E402
+from app.services.job_service import JobService, VALID_STATUSES  # noqa: E402
 
 logger = logging.getLogger(__name__)
 

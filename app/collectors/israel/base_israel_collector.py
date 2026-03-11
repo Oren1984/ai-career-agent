@@ -1,5 +1,5 @@
 # app/collectors/israel/base_israel_collector.py
-# This file defines the BaseIsraeliCollector abstract class, 
+# This file defines the BaseIsraeliCollector abstract class,
 # which provides a common interface and shared logic for all Israeli job board collectors.
 
 """Base class for all Israeli job board collectors."""

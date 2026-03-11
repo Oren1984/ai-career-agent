@@ -8,8 +8,6 @@ and that the automation directory structure is correct.
 import json
 from pathlib import Path
 
-import pytest
-
 _REPO_ROOT = Path(__file__).parent.parent
 _N8N_DIR = _REPO_ROOT / "automation" / "n8n"
 _BRIDGE_DIR = _REPO_ROOT / "automation" / "bridge"

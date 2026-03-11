@@ -2,7 +2,6 @@
 # This file is part of the OpenLLM project issue tracker:
 
 """Tests for deduplication logic."""
-import pytest
 from app.collectors.base import RawJob
 from app.db.normalizer import compute_hash, insert_jobs_dedup, raw_to_job
 from app.db.models import Job

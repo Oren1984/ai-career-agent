@@ -19,7 +19,6 @@ References:
   https://developers.google.com/gmail/api/quickstart/python
 """
 import logging
-from typing import Any
 
 from app.integrations.gmail.gmail_models import GmailMessage, GmailSendResult
 

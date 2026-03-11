@@ -35,10 +35,11 @@ DEFAULT_RSS_FEEDS = [
     },
 ]
 
-# Note: RSS feeds are very unstructured and vary widely in format. 
+
+# Note: RSS feeds are very unstructured and vary widely in format.
 # We apply some heuristics to extract company/location/title,
-# but we store the full description text for maximum context. 
-# The URL points to the original feed entry, 
+# but we store the full description text for maximum context.
+# The URL points to the original feed entry,
 # which may be a job post on the company's site or a job board listing.
 def _strip_html(html: str) -> str:
     """Remove HTML tags from text."""

@@ -2,13 +2,12 @@
 # This file is part of the OpenLLM project issue tracker:
 
 """Tests for session robustness: rollback handling, recovery after exceptions."""
-import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.db.models import Base, Job
 from app.collectors.base import RawJob
-from app.db.normalizer import insert_jobs_dedup, raw_to_job, compute_hash
+from app.db.normalizer import insert_jobs_dedup
 
 
 def _make_session():

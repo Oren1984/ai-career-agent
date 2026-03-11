@@ -2,9 +2,7 @@
 # This file is part of the OpenLLM project issue tracker:
 
 """Tests for the layered deduplication engine."""
-import pytest
 from dataclasses import dataclass
-from datetime import datetime
 
 from app.dedup.dedup_engine import DedupEngine, DedupResult, _normalize_text, _url_key
 
@@ -22,8 +20,10 @@ class MockJob:
     source_job_id: str = ""
 
 
-def make_job(title="Python Dev", company="Acme", location="Tel Aviv", url="http://example.com/1", source="test", source_job_id=""):
-    return MockJob(title=title, company=company, location=location, url=url, source=source, source_job_id=source_job_id)
+def make_job(title="Python Dev", company="Acme", location="Tel Aviv",
+             url="http://example.com/1", source="test", source_job_id=""):
+    return MockJob(title=title, company=company, location=location,
+                   url=url, source=source, source_job_id=source_job_id)
 
 
 # ── Unit: helper functions ─────────────────────────────────────────────────────
@@ -89,8 +89,10 @@ class TestDedupEngineSourceId:
     def test_different_source_same_id_not_duplicate(self):
         engine = DedupEngine(enable_fuzzy=False)
         # Different source+id AND different title/company/location so fingerprint differs too
-        job1 = make_job(title="Python Dev", company="Acme", location="Tel Aviv", url="", source="drushim", source_job_id="123")
-        job2 = make_job(title="Java Dev", company="BetaCorp", location="Haifa", url="", source="alljobs", source_job_id="123")
+        job1 = make_job(title="Python Dev", company="Acme", location="Tel Aviv",
+                        url="", source="drushim", source_job_id="123")
+        job2 = make_job(title="Java Dev", company="BetaCorp", location="Haifa",
+                        url="", source="alljobs", source_job_id="123")
         engine.add(job1)
         is_dup, reason = engine.is_duplicate(job2)
         assert is_dup is False

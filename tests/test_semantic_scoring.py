@@ -2,7 +2,6 @@
 # This file is part of the OpenLLM project issue tracker:
 
 """Tests for V2 semantic scoring and combined scorer."""
-import pytest
 from unittest.mock import MagicMock
 
 from app.matching.semantic_scorer import SemanticScorer, SemanticScoreResult, SEMANTIC_THEMES

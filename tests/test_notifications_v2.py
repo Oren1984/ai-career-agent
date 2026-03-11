@@ -3,8 +3,6 @@
 
 """Tests for the new notification layer (BaseNotifier, ConsoleNotifier, FileNotifier, Orchestrator)."""
 import pytest
-import tempfile
-from pathlib import Path
 from typing import Any
 
 from app.notifications.base_notifier import BaseNotifier

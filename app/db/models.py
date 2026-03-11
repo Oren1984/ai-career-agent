@@ -11,6 +11,7 @@ from sqlalchemy.orm import DeclarativeBase, relationship
 class Base(DeclarativeBase):
     pass
 
+
 # Note: We use a single "jobs" table to store all collected jobs, regardless of source.
 class Job(Base):
     __tablename__ = "jobs"

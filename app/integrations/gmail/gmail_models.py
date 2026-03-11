@@ -1,5 +1,5 @@
 # app/integrations/gmail/gmail_models.py
-# This file defines data models for the Gmail integration, 
+# This file defines data models for the Gmail integration,
 # which is planned for future implementation but not yet activated.
 
 """Data models for Gmail integration — FUTURE / NOT ACTIVATED."""

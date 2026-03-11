@@ -2,9 +2,6 @@
 # This file is part of the OpenLLM project issue tracker:
 
 """Sanity tests for dashboard module import and key function availability."""
-import pytest
-import importlib
-import sys
 
 
 class TestDashboardImport:
@@ -19,7 +16,7 @@ class TestDashboardImport:
         modules it depends on can be imported cleanly.
         """
         from app.db.session import init_db, get_session
-        from app.services.job_service import JobService, VALID_STATUSES
+        from app.services.job_service import VALID_STATUSES
         assert callable(init_db)
         assert callable(get_session)
         assert isinstance(VALID_STATUSES, set)
@@ -30,7 +27,6 @@ class TestDashboardImport:
         assert VALID_STATUSES == expected
 
     def test_dashboard_file_exists(self):
-        import os
         from pathlib import Path
         dash_path = Path(__file__).parent.parent / "dashboard" / "streamlit_app.py"
         assert dash_path.exists(), f"Dashboard file not found at {dash_path}"

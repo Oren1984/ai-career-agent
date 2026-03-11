@@ -53,6 +53,7 @@ _TITLE_PATTERN = re.compile(
     re.IGNORECASE,
 )
 
+
 # Note: HN job posts are very unstructured. We apply some heuristics to extract company/location/title,
 # but we store the full comment text as the description for maximum context.
 # The URL points to the HN comment itself.
@@ -104,7 +105,7 @@ class HackerNewsHiringCollector(BaseCollector):
                 return str(hit.get("objectID", ""))
 
         return None
-    
+
     # Note: We fetch comments using the Algolia API, which returns them in a structured format.
     # We then apply heuristics to parse out company/location/title,
     # but we keep the full comment text as the description for maximum context.

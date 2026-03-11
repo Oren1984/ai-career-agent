@@ -21,10 +21,8 @@ class TestEmbeddingAvailability:
         assert isinstance(result, bool)
 
     def test_is_available_false_when_not_installed(self):
-        from app.matching.embedding_scorer import is_available
         with patch.dict("sys.modules", {"sentence_transformers": None}):
             # When module is None it raises ImportError on import
-            import importlib
             import app.matching.embedding_scorer as mod
             with patch.object(mod, "is_available", return_value=False):
                 assert mod.is_available() is False
@@ -198,7 +196,7 @@ class TestCombinedScorerEmbeddingMode:
     def test_embeddings_mode_with_mocked_model(self):
         """Test embedding mode end-to-end with a mocked sentence transformer."""
         from app.matching.combined_scorer import CombinedScorer, SEMANTIC_MODE_EMBEDDINGS
-        from app.matching.embedding_scorer import EmbeddingScorer, is_available
+        from app.matching.embedding_scorer import is_available
 
         if not is_available():
             pytest.skip("sentence-transformers not installed")

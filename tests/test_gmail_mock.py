@@ -2,8 +2,6 @@
 # This file is part of the OpenLLM project issue tracker:
 
 """Tests for the Gmail mock client — does not send real emails."""
-import pytest
-
 from app.integrations.gmail.gmail_mock import GmailMockClient
 from app.integrations.gmail.gmail_models import GmailMessage, GmailSendResult
 from app.integrations.gmail.gmail_client import GmailClient, ENABLED as GMAIL_ENABLED

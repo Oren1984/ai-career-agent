@@ -18,7 +18,7 @@ class TestSchedulerModule:
         collect_fn = MagicMock()
         score_fn = MagicMock()
 
-        results = run_once(collect_fn, score_fn)
+        run_once(collect_fn, score_fn)
 
         collect_fn.assert_called_once()
         score_fn.assert_called_once()

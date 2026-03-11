@@ -8,7 +8,6 @@ Used in tests to verify notification logic without requiring
 OAuth credentials or network access.
 """
 import logging
-from typing import Any
 
 from app.integrations.gmail.gmail_models import GmailMessage, GmailSendResult
 

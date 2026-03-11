@@ -6,11 +6,11 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-import logging
+import logging  # noqa: E402
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
 
-from app.db.session import init_db, get_engine
+from app.db.session import get_engine  # noqa: E402
 
 # V2 columns to add to the scores table if they don't exist yet
 _V2_MIGRATIONS = [

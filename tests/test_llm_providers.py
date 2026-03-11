@@ -3,7 +3,6 @@
 
 """Tests for V2 LLM provider layer — loading, fallback, and mock behavior."""
 import os
-import pytest
 from unittest.mock import patch
 
 from app.llm.mock_provider import MockLLMProvider

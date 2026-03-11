@@ -3,7 +3,6 @@
 
 """Tests for V3 job notification system."""
 import json
-import pytest
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
@@ -212,7 +211,6 @@ class TestSlackChannel:
 
         assert result is True
         mock_post.assert_called_once()
-        call_kwargs = mock_post.call_args[1]
         assert "hooks.slack.com" in mock_post.call_args[0][0]
 
     def test_send_returns_false_on_error(self):
@@ -270,7 +268,8 @@ class TestTelegramChannel:
 
         ch = TelegramChannel({"bot_token": "TOKEN", "chat_id": "123"})
 
-        with patch("app.notifications.channels.telegram_channel.requests.post", side_effect=req.RequestException("err")):
+        with patch("app.notifications.channels.telegram_channel.requests.post",
+                   side_effect=req.RequestException("err")):
             result = ch.send("Subject", "Body", _make_high_job())
 
         assert result is False
@@ -308,8 +307,6 @@ class TestNotifier:
         assert result == 0
 
     def test_does_not_notify_already_sent_job(self, tmp_path, db_session):
-        from app.notifications.channels.slack_channel import SlackChannel
-
         high_job = _make_high_job(job_id=42)
 
         mock_svc = MagicMock()

@@ -1,5 +1,5 @@
 # collectors/greenhouse_collector.py
-# this file defines the GreenhouseCollector class 
+# this file defines the GreenhouseCollector class
 # to fetch job listings from Greenhouse ATS public boards
 
 """
@@ -36,6 +36,7 @@ _REQUEST_TIMEOUT = 10  # seconds
 
 # Default set of companies to query — expand as needed
 DEFAULT_COMPANIES: list[str] = []
+
 
 # Note: Greenhouse's public API does not require authentication for fetching job listings,
 # but it does require the company slug. We rely on configuration to specify which companies to fetch from,
@@ -100,7 +101,11 @@ class GreenhouseCollector(BaseCollector):
         # updated_at if available, else now
         updated = job.get("updated_at", "")
         try:
-            date_found = datetime.fromisoformat(updated.replace("Z", "+00:00")) if updated else datetime.now(timezone.utc).replace(tzinfo=None)
+            date_found = (
+                datetime.fromisoformat(updated.replace("Z", "+00:00"))
+                if updated
+                else datetime.now(timezone.utc).replace(tzinfo=None)
+            )
         except Exception:
             date_found = datetime.now(timezone.utc).replace(tzinfo=None)
 

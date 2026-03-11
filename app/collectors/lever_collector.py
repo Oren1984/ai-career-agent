@@ -35,6 +35,7 @@ _REQUEST_TIMEOUT = 10  # seconds
 
 DEFAULT_COMPANIES: list[str] = []
 
+
 # Note: Lever's public API does not require authentication for fetching job postings,
 # but it does require the company slug. We rely on configuration to specify which companies to fetch
 class LeverCollector(BaseCollector):
@@ -84,7 +85,11 @@ class LeverCollector(BaseCollector):
         posting_url = posting.get("hostedUrl", "") or posting.get("applyUrl", "")
 
         categories = posting.get("categories", {})
-        location = categories.get("location", "") or categories.get("allLocations", [""])[0] if isinstance(categories.get("allLocations"), list) else ""
+        all_locs = categories.get("allLocations")
+        location = (
+            categories.get("location", "")
+            or (all_locs[0] if isinstance(all_locs, list) else "")
+        )
         department = categories.get("team", "") or categories.get("department", "")
 
         # Build a short description from available metadata
@@ -109,7 +114,11 @@ class LeverCollector(BaseCollector):
         # createdAt is a Unix ms timestamp
         created_ms = posting.get("createdAt", 0)
         try:
-            date_found = datetime.fromtimestamp(created_ms / 1000, tz=timezone.utc).replace(tzinfo=None) if created_ms else datetime.now(timezone.utc).replace(tzinfo=None)
+            date_found = (
+                datetime.fromtimestamp(created_ms / 1000, tz=timezone.utc).replace(tzinfo=None)
+                if created_ms
+                else datetime.now(timezone.utc).replace(tzinfo=None)
+            )
         except Exception:
             date_found = datetime.now(timezone.utc).replace(tzinfo=None)
 

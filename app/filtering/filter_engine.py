@@ -3,7 +3,6 @@
 
 """Rules-based filter engine using profile keywords."""
 import logging
-import os
 from pathlib import Path
 from typing import Any
 
@@ -12,6 +11,7 @@ import yaml
 logger = logging.getLogger(__name__)
 
 _DEFAULT_PROFILE_PATH = Path(__file__).parent.parent.parent / "config" / "profile.yaml"
+
 
 # Note: This is a simple keyword-based filter engine for demonstration purposes.
 def load_profile(profile_path: str | Path | None = None) -> dict[str, Any]:
@@ -22,6 +22,7 @@ def load_profile(profile_path: str | Path | None = None) -> dict[str, Any]:
         return {"positive_keywords": [], "negative_keywords": [], "target_roles": []}
     with open(path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f) or {}
+
 
 # The filter engine checks if a job matches any positive keywords and does not match any negative keywords.
 def _text_lower(job) -> str:

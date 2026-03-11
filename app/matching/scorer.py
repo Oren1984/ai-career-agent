@@ -2,9 +2,8 @@
 # This file is part of the OpenLLM project
 
 """Match scoring engine — rules-based scoring against the candidate profile."""
-import json
 import logging
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 

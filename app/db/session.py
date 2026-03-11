@@ -4,7 +4,7 @@
 """Database session management and initialization."""
 import os
 import logging
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 from app.db.models import Base
 

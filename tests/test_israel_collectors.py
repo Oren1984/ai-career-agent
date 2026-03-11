@@ -99,7 +99,8 @@ class TestDrushimCollector:
 
     def test_normalize_job(self):
         c = DrushimCollector()
-        raw = {"title": "Dev", "company": "Co", "city": "Tel Aviv", "url": "http://x.com", "description": "Test", "days_ago": 0}
+        raw = {"title": "Dev", "company": "Co", "city": "Tel Aviv",
+               "url": "http://x.com", "description": "Test", "days_ago": 0}
         job = c.normalize_job(raw)
         assert isinstance(job, RawJob)
         assert job.title == "Dev"
@@ -127,7 +128,8 @@ class TestAllJobsCollector:
 
     def test_normalize_job(self):
         c = AllJobsCollector()
-        raw = {"title": "Engineer", "company": "Corp", "city": "Haifa", "url": "http://y.com", "description": "Desc", "days_ago": 1}
+        raw = {"title": "Engineer", "company": "Corp", "city": "Haifa",
+               "url": "http://y.com", "description": "Desc", "days_ago": 1}
         job = c.normalize_job(raw)
         assert isinstance(job, RawJob)
         assert "Israel" in job.location

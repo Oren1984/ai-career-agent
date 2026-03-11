@@ -1,5 +1,5 @@
 # candidate/profile_loader.py
-# this file defines the CandidateProfile dataclass and 
+# this file defines the CandidateProfile dataclass and
 # the load_candidate_profile function to read profile data from disk
 
 """Candidate profile loader — reads structured profile files and builds a unified CandidateProfile."""
@@ -82,6 +82,7 @@ class CandidateProfile:
             "skills": self.skills,
             "projects": self.projects,
         }
+
 
 # This function is the main entry point for loading the candidate profile from disk.
 def load_candidate_profile(

@@ -146,7 +146,7 @@ def build_summary_fallback(text: str, max_chars: int = 500) -> str:
     """
     lines = [line.strip() for line in text.split("\n") if line.strip()]
     # Skip very short lines (headers, single words)
-    paragraphs = [l for l in lines if len(l) > 40]
+    paragraphs = [line for line in lines if len(line) > 40]
     if not paragraphs:
         return ""
     return " ".join(paragraphs[:3])[:max_chars]
@@ -154,25 +154,28 @@ def build_summary_fallback(text: str, max_chars: int = 500) -> str:
 
 # ── LLM-assisted extraction ────────────────────────────────────────────────────
 
-_LLM_PROMPT = """You are a career data extractor. Given the resume text below, return a JSON object with exactly these fields:
-
-{{
-  "summary": "<2-3 sentence professional summary>",
-  "skills": {{
-    "ai_ml": ["<skill>", ...],
-    "python": ["<skill>", ...],
-    "cloud_infra": ["<skill>", ...],
-    "data": ["<skill>", ...],
-    "tools": ["<skill>", ...]
-  }},
-  "keywords": ["<key technical term>", ...]
-}}
-
-Only include skills actually mentioned in the resume.
-Return valid JSON only — no explanation, no markdown.
-
-RESUME TEXT:
-{text}"""
+_LLM_PROMPT = (
+    "You are a career data extractor. Given the resume text below, "
+    "return a JSON object with exactly these fields:\n"
+    "\n"
+    "{{\n"
+    '  "summary": "<2-3 sentence professional summary>",\n'
+    '  "skills": {{\n'
+    '    "ai_ml": ["<skill>", ...],\n'
+    '    "python": ["<skill>", ...],\n'
+    '    "cloud_infra": ["<skill>", ...],\n'
+    '    "data": ["<skill>", ...],\n'
+    '    "tools": ["<skill>", ...]\n'
+    "  }},\n"
+    '  "keywords": ["<key technical term>", ...]\n'
+    "}}\n"
+    "\n"
+    "Only include skills actually mentioned in the resume.\n"
+    "Return valid JSON only — no explanation, no markdown.\n"
+    "\n"
+    "RESUME TEXT:\n"
+    "{text}"
+)
 
 
 def extract_with_llm(text: str) -> dict | None:
@@ -316,7 +319,7 @@ Requirements (install at least one):
     try:
         result = parse_resume(args.resume, output_dir=args.output_dir, dry_run=args.dry_run)
         if not args.dry_run:
-            print(f"\nResume parsed successfully.")
+            print("\nResume parsed successfully.")
             print(f"Summary: {result['summary'][:100]}...")
             skill_count = sum(len(v) for v in result["skills"].values())
             print(f"Skills extracted: {skill_count} across {len(result['skills'])} categories")

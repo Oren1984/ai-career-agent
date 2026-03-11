@@ -2,13 +2,9 @@
 # This file is part of the OpenLLM project issue tracker:
 
 """Tests for database persistence and integrity."""
-import json
-import pytest
-from datetime import datetime
-
 from app.db.models import Job, Score, StatusHistory
 from app.collectors.base import RawJob
-from app.db.normalizer import insert_jobs_dedup, raw_to_job
+from app.db.normalizer import insert_jobs_dedup
 from app.services.job_service import JobService
 
 

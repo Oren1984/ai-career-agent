@@ -7,6 +7,7 @@ from app.llm.base import BaseLLMProvider
 
 logger = logging.getLogger(__name__)
 
+
 # This is a simple mock provider for V1 to allow testing the overall flow without integrating a real LLM API.
 class MockLLMProvider(BaseLLMProvider):
     """
