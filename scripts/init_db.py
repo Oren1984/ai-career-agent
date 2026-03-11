@@ -16,7 +16,7 @@ from app.db.session import get_engine  # noqa: E402
 _V2_MIGRATIONS = [
     ("keyword_score", "ALTER TABLE scores ADD COLUMN keyword_score REAL"),
     ("semantic_score", "ALTER TABLE scores ADD COLUMN semantic_score REAL"),
-    ("final_score",   "ALTER TABLE scores ADD COLUMN final_score REAL"),
+    ("final_score", "ALTER TABLE scores ADD COLUMN final_score REAL"),
     ("matched_themes", "ALTER TABLE scores ADD COLUMN matched_themes TEXT"),
     ("missing_themes", "ALTER TABLE scores ADD COLUMN missing_themes TEXT"),
 ]
